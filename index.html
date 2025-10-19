@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Lá thư 20/10</title>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fff7f9;
+    --accent:#ff6b9a;
+    --muted:#6b6b6b;
+  }
+  html,body{height:100%;margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
+  body{
+    background: radial-gradient(circle at 10% 10%, #fff1f5 0%, var(--bg) 40%) fixed;
+    display:flex;align-items:center;justify-content:center;padding:24px;
+  }
+
+  .card{
+    width:100%;max-width:760px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,250,252,0.95));
+    border-radius:20px;box-shadow:0 10px 30px rgba(0,0,0,0.08);overflow:hidden;position:relative;padding:28px;
+    border:1px solid rgba(255,107,154,0.08)
+  }
+
+  header{display:flex;gap:12px;align-items:center;margin-bottom:6px}
+  .logo{
+    width:68px;height:68px;border-radius:14px;background:linear-gradient(135deg,#ffd1e0,#ffc0d6);
+    display:flex;align-items:center;justify-content:center;font-family:Great Vibes;font-size:24px;color:#8c2b47;box-shadow:0 6px 18px rgba(252,120,150,0.12)
+  }
+  h1{font-family:Great Vibes;font-size:36px;margin:0;color:#8c2b47}
+  p.meta{margin:6px 0 20px;color:var(--muted);font-size:14px}
+
+  .letter{
+    background:linear-gradient(180deg,rgba(255,255,255,0.8),rgba(255,255,255,0.6));
+    border-radius:12px;padding:20px;min-height:220px;position:relative;border:1px dashed rgba(255,107,154,0.12);
+    font-size:16px;line-height:1.7;color:#333;overflow:hidden;
+  }
+
+  .typewriter {
+    white-space:pre-wrap;
+    font-size:18px;
+  }
+  .controls{display:flex;gap:8px;margin-top:16px;align-items:center}
+  button.btn{
+    background:linear-gradient(180deg,var(--accent),#ff4f82);border:0;color:white;padding:10px 14px;border-radius:12px;font-weight:600;
+    box-shadow:0 6px 18px rgba(255,107,154,0.18);cursor:pointer;
+  }
+  button.btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(255,107,154,0.12);box-shadow:none}
+
+  /* floating hearts */
+  .heart{
+    position:absolute;left:50%;top:-20px;width:24px;height:24px;opacity:0.9;transform:translateX(-50%);
+    animation:float 6s linear infinite;
+  }
+  @keyframes float{
+    0%{transform:translateX(-50%) translateY(0) scale(0.9);opacity:0.8}
+    50%{transform:translateX(calc(-50% + 40px)) translateY(70px) scale(1.1);opacity:1}
+    100%{transform:translateX(calc(-50% - 40px)) translateY(180px) scale(0.8);opacity:0}
+  }
+
+  /* confetti canvas sized */
+  #confetti-canvas{position:absolute;inset:0;pointer-events:none}
+
+  /* falling petals */
+  .petal{
+    position:absolute;width:14px;height:14px;background:linear-gradient(135deg,#ffd8e6,#fff0f6);border-radius:50%;
+    box-shadow:0 2px 6px rgba(0,0,0,0.08);opacity:0.9;
+    animation:fall linear infinite;
+  }
+  @keyframes fall{
+0%{transform:translateY(-10vh) rotate(0deg)}
+    100%{transform:translateY(110vh) rotate(360deg)}
+  }
+
+  footer.note{margin-top:18px;color:var(--muted);font-size:13px;text-align:right}
+  /* sparkle effect */
+  .sparkle{position:relative;display:inline-block}
+  .sparkle::after{
+    content:"";position:absolute;left:50%;top:30%;width:6px;height:6px;border-radius:50%;
+    background:linear-gradient(45deg,#fff6a8,#ffd1e0);opacity:0;transform:translate(-50%,-50%) scale(0.5);
+    animation:twinkle 2.2s infinite;
+  }
+  @keyframes twinkle{0%{opacity:0}50%{opacity:1;transform:translate(-50%,-50%) scale(1.2)}100%{opacity:0}}
+  /* responsive */
+  @media (max-width:460px){h1{font-size:28px}.logo{width:56px;height:56px;font-size:20px}}
+  /* ==== Hoa mở đầu ==== */
+#flower-screen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, #ffe5ef, #fff7f9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 999; /* nằm trên hết */
+  transition: opacity 1s ease;
+}
+
+#flower-screen.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Bông hoa đơn giản xoay nhẹ */
+.flower {
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(circle at 50% 50%, #ff9cb6, #ff6b9a 70%);
+  border-radius: 50%;
+  box-shadow: 0 0 30px rgba(255,107,154,0.4);
+  position: relative;
+  animation: rotateFlower 6s linear infinite;
+  cursor: pointer;
+}
+
+.flower::before, .flower::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 50% 50%, #ffc0cb, #ff8fa3 80%);
+  opacity: 0.6;
+}
+
+.flower::before { transform: rotate(45deg); }
+.flower::after { transform: rotate(90deg); }
+
+@keyframes rotateFlower {
+  from { transform: rotate(0deg) scale(1); }
+  to { transform: rotate(360deg) scale(1); }
+}
+
+.hint {
+  font-family: 'Great Vibes', cursive;
+  color: #b04b6b;
+  font-size: 22px;
+  margin-top: 20px;
+  animation: pulseText 2s ease-in-out infinite;
+}
+
+@keyframes pulseText {
+  0%,100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+/* Ẩn phần lá thư ban đầu */
+.card {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.card.show {
+  opacity: 1;
+  transform: scale(1);
+}
+
+</style>
+</head>
+<body>
+    <!-- Hiệu ứng bông hoa mở đầu -->
+<div id="flower-screen">
+  <div class="flower"></div>
+  <p class="hint">Nhấn vào bông hoa để mở thư 💖</p>
+</div>
+
+<div class="card" role="main" aria-label="Lá thư 20/10">
+  <canvas id="confetti-canvas"></canvas>
+  <div class="heart" id="heart-svg" aria-hidden="true">
+    <!-- tiny heart svg -->
+    <svg width="24" height="24" viewBox="0 0 24 24"><path fill="#ff6b9a" d="M12 21s-7.5-4.9-9.2-7.1C1.4 11.9 3 7.7 6 6c1.8-1.1 4.4-0.5 5.9 1 1.5-1.5 4.1-2.1 5.9-1C21 7.7 22.6 11.9 21.2 13.9 19.5 16.1 12 21 12 21z"/></svg>
+  </div>
+
+  <header>
+    <div class="logo">20/10</div>
+    <div>
+      <h1 class="sparkle">Gửi chị Thư - Cô gái dễ thương.</h1>
+      <p class="meta">Một lá thư nhỏ của em nhân ngày 20/10.</p>
+    </div>
+  </header>
+
+  <section class="letter" id="letter">
+    <div class="typewriter" id="typewriter"></div>
+  </section>
+
+  <div class="controls">
+    <button class="btn" id="replay">Chạy lại hiệu ứng</button>
+    <button class="btn ghost" id="musicToggle"></button>
+  </div>
+
+  <footer class="note">Chúc mừng 20/10 — từ <strong>T</strong></footer>
+</div>
+
+<!-- Optional small audio (replace src with your file if hosting) -->
+<audio id="bgm" loop preload="none">
+  <source src="1019(1).MP3" type="audio/mpeg">
+</audio>
+
+<script>
+/* ============= typewriter text ============= */
+const text = `Gửi chị Thư thân mến,\n\nChúc chị một ngày 20/10 thật vui, thật nhẹ nhàng và tràn đầy năng lượng nha 🌷
+
+Em không biết chị có bận hay không, nhưng em vẫn muốn dành ít phút để viết vài dòng này – đơn giản vì em thấy chị xứng đáng được nhận những lời chúc tốt đẹp nhất hôm nay.
+
+Cảm ơn chị vì thời gian qua vẫn luôn là một người dễ thương, gần gũi và chân thành. Có những lúc nói chuyện với chị, em cảm thấy cuộc sống mình nhẹ nhàng và vui hơn nhiều.
+
+Em chúc chị luôn mạnh mẽ, luôn giữ được nụ cười tươi như mọi khi, và dù cuộc sống có bận rộn hay mệt mỏi thì vẫn luôn có những điều nhỏ bé khiến chị thấy ấm lòng.
+
+Mong rằng chị luôn gặp điều may mắn, học tập suôn sẻ, làm điều gì cũng thuận lợi.
+
+Còn về phần em, em vẫn như cũ — vẫn luôn mong chị hạnh phúc, dù là trong những điều nhỏ nhất 🌼
+
+Chúc chị 20/10 thật xinh đẹp và bình yên.`;
+
+const tw = document.getElementById('typewriter');
+let i = 0;
+function typeStep(){
+  if(i <= text.length){
+    tw.textContent = text.slice(0,i);
+    i++;
+    setTimeout(typeStep, 28 + Math.random()*40);
+  }
+}
+typeStep();
+
+/* ============= confetti ============= */
+const canvas = document.getElementById('confetti-canvas');
+const ctx = canvas.getContext('2d');
+let W = canvas.width = window.innerWidth;
+let H = canvas.height = window.innerHeight;
+window.addEventListener('resize',()=>{W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;});
+const pieces = [];
+const colors = ['#FFD1E3','#FFB3C6','#FFC9E3','#FFF1F7','#FFDCE6'];
+function spawnConfetti(n=80){
+  pieces.length=0;
+  for(let i=0;i<n;i++){
+    pieces.push({
+      x:Math.random()*W,
+      y:Math.random()*-H*0.2,
+      r:Math.random()*6+4,
+      d:Math.random()*60+10,
+      tilt:Math.random()*10,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      speedY:2+Math.random()*4
+    });
+  }
+}
+function updateConfetti(){
+  ctx.clearRect(0,0,W,H);
+  for(let p of pieces){
+    p.y += p.speedY;
+    p.x += Math.sin(p.y/30)*1.5;
+    p.tilt += 0.05;
+    ctx.save();
+    ctx.translate(p.x,p.y);
+    ctx.rotate(p.tilt*0.02);
+    ctx.fillStyle = p.color;
+    ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r*0.6);
+    ctx.restore();
+    if(p.y > H+20){
+      p.y = -20; p.x = Math.random()*W;
+    }
+  }
+  requestAnimationFrame(updateConfetti);
+}
+spawnConfetti(80);
+updateConfetti();
+
+/* ============= petals ============= */
+function createPetals(n=12){
+  for(let k=0;k<n;k++){
+    const p = document.createElement('div');
+    p.className='petal';
+    p.style.left = Math.random()*100 + '%';
+    p.style.top = Math.random()*-30 + 'vh';
+    p.style.width = (8+Math.random()*16)+'px';
+    p.style.height = (8+Math.random()*16)+'px';
+    p.style.opacity = 0.6+Math.random()*0.6;
+    p.style.animationDuration = 6+Math.random()*6+'s';
+    p.style.transform = `rotate(${Math.random()*360}deg)`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),16000);
+  }
+}
+createPetals(14);
+setInterval(()=>createPetals(6),6000);
+
+/* ============= small heart pop ============= */
+const heart = document.getElementById('heart-svg');
+(function pulse(){
+  heart.animate([{transform:'translateX(-50%) scale(0.9)'},{transform:'translateX(-50%) scale(1.08)'},{transform:'translateX(-50%) scale(0.95)'}],{duration:1800,iterations:Infinity});
+})();
+
+/* ============= controls ============= */
+const replay = document.getElementById('replay');
+replay.addEventListener('click',()=>{
+  // restart typewriter
+  i=0; tw.textContent='';
+  typeStep();
+  spawnConfetti(120);
+});
+
+const bgm = document.getElementById('bgm');
+const musicToggle = document.getElementById('musicToggle');
+let musicOn = false;
+musicToggle.addEventListener('click',async ()=>{
+  if(!musicOn){
+    try{ await bgm.play(); }catch(e){ /* autoplay blocked; user clicked so should be fine */ }
+    musicToggle.textContent='Tắt nhạc';
+  } else {
+    bgm.pause();
+    musicToggle.textContent='Phát nhạc nhẹ';
+  }
+  musicOn = !musicOn;
+});
+
+/* ============= accessibility: allow keyboard replay ============= */
+document.addEventListener('keydown',(e)=>{ if(e.key==='r' || e.key==='R') replay.click(); });
+/* ============= Hoa mở đầu ============= */
+const flowerScreen = document.getElementById('flower-screen');
+const flower = flowerScreen.querySelector('.flower');
+const card = document.querySelector('.card');
+
+flower.addEventListener('click', () => {
+  flowerScreen.classList.add('hidden');
+  const bgm = document.getElementById('bgm'); // lấy nhạc đã có sẵn trong code
+  try { bgm.play(); } catch(e) { console.warn('Autoplay blocked'); } // bật nhạc luôn
+  
+  setTimeout(() => {
+    flowerScreen.style.display = 'none';
+    card.classList.add('show');
+    replay.click();
+  }, 1000);
+});
+
+</script>
+</body>
+</html>
